@@ -157,6 +157,24 @@ const injectStyles = () => {
       from { opacity: 0; transform: translateY(24px); }
       to { opacity: 1; transform: translateY(0); }
     }
+    @keyframes faq-expand {
+      from { opacity: 0; transform: translateY(-8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes orb-drift {
+      0%, 100% { transform: translateY(0px) scale(1); }
+      50%       { transform: translateY(-20px) scale(1.07); }
+    }
+    @keyframes badge-pop {
+      0%   { transform: scale(0.6); opacity: 0; }
+      70%  { transform: scale(1.15); }
+      100% { transform: scale(1);   opacity: 1; }
+    }
+    .faq-answer { animation: faq-expand 0.32s cubic-bezier(0.22,1,0.36,1) both; }
+    .faq-card { transition: box-shadow 0.3s ease, border-color 0.3s ease, transform 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+    .faq-card:hover { transform: translateY(-4px); }
+    .faq-icon-bubble { transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+    .faq-card:hover .faq-icon-bubble { transform: scale(1.14) rotate(-8deg); }
 
     .page-enter { animation: page-enter 0.55s cubic-bezier(0.22, 1, 0.36, 1) both; }
     .float-up { animation: float-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) both; }
@@ -1605,207 +1623,521 @@ function Footer({ navigate }) {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   PAGE: HELP
+   PAGE: HELP  (FAQ accordion)
    ═══════════════════════════════════════════════════════════ */
-const FAQ_ITEMS = [
+const FAQ_DATA = [
   {
-    q: "What are your opening hours?",
-    a: "We're open every day from 11:00 AM to 11:30 PM — including weekends and public holidays. Last orders for dine-in are accepted at 10:45 PM.",
-    icon: "🕐",
+    category: "Reservations & Dining",
+    color: "#ff6b9d",
+    bg: "rgba(255,107,157,0.08)",
+    icon: "🌸",
+    items: [
+      {
+        q: "Do you accept reservations?",
+        a: "Yes! Call us at +91 22 4001 9999 or email hello@sakurabites.in. Walk-ins are welcome based on availability, but we recommend booking ahead for groups of 4 or more — especially on weekends.",
+      },
+      {
+        q: "What are your opening hours?",
+        a: "We're open every day including public holidays from 11:00 AM to 11:30 PM. Last dine-in orders are accepted at 10:45 PM and last delivery orders at 11:00 PM.",
+      },
+      {
+        q: "Is there a dress code?",
+        a: "We have a smart-casual dress code for our dining room — nothing too formal! Our rooftop terrace is open-air, so comfortable attire is perfectly fine up there.",
+      },
+    ],
   },
   {
-    q: "Do you accept reservations?",
-    a: "Yes! You can call us at +91 22 4001 9999 or email hello@sakurabites.in to reserve a table. Walk-ins are welcome based on availability, but we recommend booking for groups of 4 or more.",
-    icon: "📅",
+    category: "Menu & Dietary",
+    color: "#43b89c",
+    bg: "rgba(67,184,156,0.08)",
+    icon: "🍱",
+    items: [
+      {
+        q: "Do you have vegetarian or vegan options?",
+        a: "Absolutely! Our menu is clearly labelled: 🌱 Vegan and 🌿 Healthy. Highlights include Vegetable Udon, Edamame Gyoza, and Miso Soup Deluxe. Please inform your server of any dietary requirements.",
+      },
+      {
+        q: "Are your dishes gluten-free friendly?",
+        a: "Several dishes can be adapted to be gluten-free — we use tamari as a soy-sauce substitute. However, our kitchen handles gluten-containing ingredients, so we cannot guarantee a fully allergen-free environment. Please speak to your server.",
+      },
+      {
+        q: "Can I customise my order?",
+        a: "Most certainly. Chef Hiroshi encourages guests to tailor heat levels, broth richness, and protein choices. Some premium customisations may carry a small surcharge — your server will always advise you before confirming.",
+      },
+    ],
   },
   {
-    q: "How do I track my delivery order?",
-    a: "Once your order is confirmed, you'll receive an SMS with a live tracking link. You can also check the Delivery page in the app for real-time status updates on your order.",
+    category: "Delivery & Orders",
+    color: "#7c6af7",
+    bg: "rgba(124,106,247,0.08)",
     icon: "🛵",
+    items: [
+      {
+        q: "How do I track my delivery order?",
+        a: "Once your order is dispatched, you'll receive a live tracking link via SMS and WhatsApp. You can also check the Delivery page in our app for real-time status updates from kitchen to doorstep.",
+      },
+      {
+        q: "Is there a minimum order value for delivery?",
+        a: "The minimum order value is ₹300. Orders above ₹599 within Sakura District qualify for free delivery automatically — no promo code needed!",
+      },
+    ],
   },
   {
-    q: "Do you offer vegetarian or vegan options?",
-    a: "Absolutely! Our menu is clearly labelled with 🌱 Vegan and 🌿 Healthy tags. Highlights include our Vegetable Udon, Edamame Gyoza, and Miso Soup Deluxe. Please inform your server of any dietary requirements.",
-    icon: "🌱",
-  },
-  {
-    q: "What payment methods do you accept?",
-    a: "We accept UPI (Google Pay, PhonePe, Paytm), credit/debit cards (Visa, Mastercard, Amex), popular wallets (Amazon Pay, Mobikwik, Airtel), and Cash on Delivery for all delivery orders.",
+    category: "Payments & Offers",
+    color: "#f5a623",
+    bg: "rgba(245,166,35,0.08)",
     icon: "💳",
+    items: [
+      {
+        q: "What payment methods do you accept?",
+        a: "We accept UPI (Google Pay, PhonePe, Paytm), all major credit/debit cards (Visa, Mastercard, Amex), popular wallets (Amazon Pay, Mobikwik, Airtel Money), and Cash on Delivery for all delivery orders.",
+      },
+      {
+        q: "Do you offer a loyalty programme or gift cards?",
+        a: "Yes! Every ₹100 spent earns 1 Sakura Point. Redeem 100 points for ₹50 off your next visit. Gift cards are available in denominations of ₹500, ₹1000, and ₹2000 — perfect for anime-loving friends and family.",
+      },
+    ],
   },
 ];
 
-function HelpPage() {
-  const [openIdx, setOpenIdx] = useState(null);
+function FaqAccordionItem({ q, a, accent, isOpen, onToggle, index }) {
+  const answerRef = useRef(null);
+  const [height, setHeight] = useState(0);
 
-  const toggle = (i) => setOpenIdx(prev => (prev === i ? null : i));
+  useEffect(() => {
+    if (answerRef.current) {
+      setHeight(isOpen ? answerRef.current.scrollHeight : 0);
+    }
+  }, [isOpen]);
 
   return (
-    <div className="page-enter" style={{ paddingTop: 80, minHeight: "100vh", background: "#fdf0f5" }}>
-      {/* Header banner */}
+    <div
+      className="faq-card glass-card"
+      style={{
+        marginBottom: 10,
+        overflow: "hidden",
+        border: isOpen
+          ? `1.5px solid ${accent}55`
+          : "1px solid rgba(255,158,181,0.2)",
+        boxShadow: isOpen
+          ? `0 8px 32px ${accent}22`
+          : "0 2px 12px rgba(255,107,157,0.06)",
+        borderRadius: 18,
+        animation: `float-up 0.5s ${index * 0.06}s cubic-bezier(0.22,1,0.36,1) both`,
+      }}
+    >
+      {/* Question row */}
+      <button
+        onClick={onToggle}
+        style={{
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          gap: 14,
+          padding: "18px 22px",
+          background: isOpen ? `${accent}08` : "transparent",
+          border: "none",
+          cursor: "pointer",
+          fontFamily: "inherit",
+          textAlign: "left",
+          transition: "background 0.3s ease",
+        }}
+      >
+        {/* Animated number badge */}
+        <div
+          className="faq-icon-bubble"
+          style={{
+            width: 36,
+            height: 36,
+            borderRadius: "50%",
+            background: isOpen
+              ? `linear-gradient(135deg, ${accent}, ${accent}bb)`
+              : `${accent}18`,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontSize: "0.75rem",
+            fontWeight: 800,
+            color: isOpen ? "white" : accent,
+            flexShrink: 0,
+            boxShadow: isOpen ? `0 4px 14px ${accent}44` : "none",
+            letterSpacing: "-0.02em",
+          }}
+        >
+          {String(index + 1).padStart(2, "0")}
+        </div>
+
+        {/* Question text */}
+        <span
+          style={{
+            flex: 1,
+            fontFamily: "'Noto Serif JP', serif",
+            fontWeight: 600,
+            fontSize: "0.96rem",
+            color: isOpen ? accent : "#2d1b2e",
+            lineHeight: 1.45,
+            transition: "color 0.25s ease",
+          }}
+        >
+          {q}
+        </span>
+
+        {/* Animated chevron */}
+        <div
+          style={{
+            width: 30,
+            height: 30,
+            borderRadius: "50%",
+            background: isOpen ? `${accent}18` : "rgba(255,158,181,0.1)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexShrink: 0,
+            transition: "transform 0.35s cubic-bezier(0.34,1.56,0.64,1), background 0.25s ease",
+            transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
+          }}
+        >
+          <svg width="12" height="8" viewBox="0 0 12 8" fill="none">
+            <path
+              d="M1 1L6 6L11 1"
+              stroke={isOpen ? accent : "#9b6b8a"}
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </div>
+      </button>
+
+      {/* Smooth height-animated answer panel */}
+      <div
+        style={{
+          height,
+          overflow: "hidden",
+          transition: "height 0.38s cubic-bezier(0.22,1,0.36,1)",
+        }}
+      >
+        <div ref={answerRef}>
+          <div
+            className="faq-answer"
+            style={{
+              padding: "0 22px 22px 72px",
+              borderTop: `1px solid ${accent}22`,
+              paddingTop: 16,
+            }}
+          >
+            {/* Decorative accent bar */}
+            <div
+              style={{
+                width: 32,
+                height: 3,
+                borderRadius: 4,
+                background: `linear-gradient(90deg, ${accent}, ${accent}44)`,
+                marginBottom: 10,
+              }}
+            />
+            <p
+              style={{
+                fontSize: "0.91rem",
+                color: "#5a3d5c",
+                lineHeight: 1.78,
+              }}
+            >
+              {a}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function HelpPage() {
+  // openKey = "catIdx-itemIdx" or null
+  const [openKey, setOpenKey] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const toggle = (key) => setOpenKey(prev => (prev === key ? null : key));
+
+  // Flatten for search mode
+  const allItems = FAQ_DATA.flatMap((cat, ci) =>
+    cat.items.map((item, ii) => ({ ...item, accent: cat.color, catIcon: cat.icon, catName: cat.category, key: `${ci}-${ii}` }))
+  );
+
+  const filtered = searchTerm.trim()
+    ? allItems.filter(item =>
+        item.q.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.a.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : null;
+
+  const totalFaqs = allItems.length;
+
+  return (
+    <div className="page-enter" style={{ paddingTop: 64, minHeight: "100vh", background: "#fdf0f5" }}>
+
+      {/* ── Hero banner with animated orbs ── */}
       <div style={{
-        background: "linear-gradient(135deg, #ff6b9d 0%, #ffb3c6 60%, #ffd580 100%)",
-        padding: "60px clamp(16px,4vw,48px) 50px",
-        textAlign: "center",
         position: "relative",
         overflow: "hidden",
+        background: "linear-gradient(135deg, #2d1b2e 0%, #4a1942 45%, #8b2252 80%, #ff6b9d44 100%)",
+        padding: "72px clamp(16px,4vw,48px) 80px",
+        textAlign: "center",
       }}>
-        {/* Decorative petals */}
-        {["10%", "30%", "55%", "75%", "90%"].map((left, i) => (
+        {/* Floating colour orbs */}
+        {[
+          { size: 280, top: "-80px", left: "-60px", color: "#ff6b9d", delay: "0s" },
+          { size: 200, top: "20px",  right: "-50px", color: "#ffd580", delay: "1.5s" },
+          { size: 160, bottom: "-40px", left: "30%", color: "#87ceeb", delay: "0.8s" },
+        ].map((orb, i) => (
           <div key={i} style={{
             position: "absolute",
-            top: `${10 + i * 12}%`,
+            width: orb.size,
+            height: orb.size,
+            borderRadius: "50%",
+            background: `radial-gradient(circle, ${orb.color}33, transparent 70%)`,
+            top: orb.top,
+            left: orb.left,
+            right: orb.right,
+            bottom: orb.bottom,
+            animation: `orb-drift ${5 + i * 1.5}s ${orb.delay} ease-in-out infinite`,
+            pointerEvents: "none",
+          }} />
+        ))}
+
+        {/* Floating sakura petals */}
+        {["8%","22%","40%","60%","78%","92%"].map((left, i) => (
+          <div key={i} style={{
+            position: "absolute",
+            top: `${8 + (i % 3) * 18}%`,
             left,
-            fontSize: "1.4rem",
-            opacity: 0.25,
-            animation: `petal-spin ${6 + i * 2}s linear infinite`,
+            fontSize: "1.1rem",
+            opacity: 0.18 + (i % 3) * 0.06,
+            animation: `petal-spin ${7 + i * 1.2}s ${i * 0.4}s linear infinite`,
             pointerEvents: "none",
           }}>🌸</div>
         ))}
-        <div className="section-sub float-up" style={{ color: "rgba(255,255,255,0.85)", marginBottom: 10 }}>
-          サポート
+
+        <div style={{ position: "relative", zIndex: 2 }}>
+          <div className="section-sub float-up" style={{ color: "rgba(255,213,128,0.9)", marginBottom: 10 }}>
+            ✦ ヘルプセンター ✦
+          </div>
+          <h1
+            className="float-up-d1"
+            style={{
+              fontFamily: "'Noto Serif JP', serif",
+              fontSize: "clamp(2rem,5vw,3.2rem)",
+              fontWeight: 700,
+              color: "white",
+              textShadow: "0 4px 24px rgba(0,0,0,0.4)",
+              marginBottom: 12,
+              lineHeight: 1.2,
+            }}
+          >
+            Help & FAQ 🌸
+          </h1>
+          <p className="float-up-d2" style={{ color: "rgba(255,255,255,0.72)", fontSize: "0.97rem", maxWidth: 500, margin: "0 auto 32px", lineHeight: 1.7 }}>
+            {totalFaqs} questions answered — find yours below, or{" "}
+            <a href="mailto:hello@sakurabites.in" style={{ color: "#ffd580", fontWeight: 700 }}>drop us a message</a>.
+          </p>
+
+          {/* Search bar */}
+          <div className="float-up-d3" style={{ maxWidth: 480, margin: "0 auto", position: "relative" }}>
+            <div style={{
+              position: "absolute",
+              left: 18,
+              top: "50%",
+              transform: "translateY(-50%)",
+              fontSize: "1rem",
+              pointerEvents: "none",
+            }}>🔍</div>
+            <input
+              className="input-field"
+              placeholder="Search questions…"
+              value={searchTerm}
+              onChange={e => { setSearchTerm(e.target.value); setOpenKey(null); }}
+              style={{
+                paddingLeft: 46,
+                background: "rgba(255,255,255,0.12)",
+                border: "1.5px solid rgba(255,255,255,0.2)",
+                color: "white",
+                backdropFilter: "blur(12px)",
+                fontSize: "0.9rem",
+              }}
+            />
+          </div>
         </div>
-        <h1 className="float-up-d1 section-title" style={{ color: "white", textShadow: "0 4px 20px rgba(45,27,46,0.2)", marginBottom: 14 }}>
-          Help & FAQ
-        </h1>
-        <p className="float-up-d2" style={{ color: "rgba(255,255,255,0.88)", fontSize: "1rem", maxWidth: 480, margin: "0 auto", lineHeight: 1.7 }}>
-          Everything you need to know about Sakura Bites. Can't find an answer?{" "}
-          <a href="mailto:hello@sakurabites.in" style={{ color: "white", fontWeight: 700, textDecoration: "underline" }}>
-            Drop us a message.
-          </a>
-        </p>
       </div>
 
-      {/* FAQ cards */}
-      <div style={{ maxWidth: 780, margin: "0 auto", padding: "60px clamp(16px,4vw,48px)" }}>
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-          {FAQ_ITEMS.map((item, i) => {
-            const isOpen = openIdx === i;
-            return (
-              <div
-                key={i}
-                className="glass-card card-hover"
-                style={{
-                  overflow: "hidden",
-                  border: isOpen ? "1.5px solid rgba(255,107,157,0.45)" : "1px solid rgba(255,158,181,0.25)",
-                  boxShadow: isOpen
-                    ? "0 12px 40px rgba(255,107,157,0.15)"
-                    : "0 4px 20px rgba(255,107,157,0.07)",
-                  transition: "all 0.35s cubic-bezier(0.34,1.56,0.64,1)",
-                }}
-              >
-                {/* Question row */}
-                <button
-                  onClick={() => toggle(i)}
-                  style={{
-                    width: "100%",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 16,
-                    padding: "22px 26px",
-                    background: "none",
-                    border: "none",
-                    cursor: "pointer",
-                    fontFamily: "inherit",
-                    textAlign: "left",
-                  }}
-                >
-                  {/* Icon bubble */}
-                  <div style={{
-                    width: 44,
-                    height: 44,
-                    borderRadius: "50%",
-                    background: isOpen
-                      ? "linear-gradient(135deg, #ff6b9d, #ff9eb5)"
-                      : "rgba(255,107,157,0.1)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "1.2rem",
-                    flexShrink: 0,
-                    transition: "all 0.3s ease",
-                    boxShadow: isOpen ? "0 4px 16px rgba(255,107,157,0.35)" : "none",
-                  }}>
-                    {item.icon}
-                  </div>
-
-                  {/* Question text */}
-                  <span style={{
-                    flex: 1,
-                    fontFamily: "'Noto Serif JP', serif",
-                    fontWeight: 600,
-                    fontSize: "1rem",
-                    color: isOpen ? "#ff6b9d" : "#2d1b2e",
-                    lineHeight: 1.4,
-                    transition: "color 0.25s",
-                  }}>
-                    {item.q}
-                  </span>
-
-                  {/* Chevron */}
-                  <div style={{
-                    width: 28,
-                    height: 28,
-                    borderRadius: "50%",
-                    background: isOpen ? "rgba(255,107,157,0.12)" : "rgba(255,158,181,0.1)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    flexShrink: 0,
-                    transition: "all 0.3s ease",
-                    transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
-                    color: isOpen ? "#ff6b9d" : "#9b6b8a",
-                    fontSize: "0.75rem",
-                    fontWeight: 700,
-                  }}>
-                    ▼
-                  </div>
-                </button>
-
-                {/* Answer panel */}
-                {isOpen && (
-                  <div style={{
-                    padding: "0 26px 24px 86px",
-                    animation: "float-up 0.3s ease both",
-                  }}>
-                    <div style={{
-                      borderTop: "1px solid rgba(255,158,181,0.2)",
-                      paddingTop: 18,
-                      fontSize: "0.92rem",
-                      color: "#5a3d5c",
-                      lineHeight: 1.75,
-                    }}>
-                      {item.a}
-                    </div>
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Contact card */}
-        <div className="glass-card" style={{
-          marginTop: 48,
-          padding: "36px 32px",
-          textAlign: "center",
-          border: "1px solid rgba(255,158,181,0.25)",
-          background: "linear-gradient(135deg, rgba(255,107,157,0.06), rgba(255,213,128,0.06))",
+      {/* ── Category pills (not shown during search) ── */}
+      {!filtered && (
+        <div style={{
+          maxWidth: 860,
+          margin: "-1px auto 0",
+          padding: "28px clamp(16px,4vw,48px) 0",
+          display: "flex",
+          gap: 10,
+          flexWrap: "wrap",
         }}>
-          <div style={{ fontSize: "2rem", marginBottom: 12 }}>🌸</div>
-          <h3 style={{ fontFamily: "'Noto Serif JP', serif", fontSize: "1.2rem", color: "#2d1b2e", marginBottom: 10, fontWeight: 700 }}>
-            Still need help?
-          </h3>
-          <p style={{ color: "#9b6b8a", fontSize: "0.9rem", lineHeight: 1.7, marginBottom: 22 }}>
-            Our team is ready to help Mon–Sun, 11 AM – 11:30 PM
+          {FAQ_DATA.map((cat, ci) => (
+            <div key={ci} style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 6,
+              padding: "7px 16px",
+              borderRadius: 50,
+              background: "white",
+              border: `1.5px solid ${cat.color}44`,
+              fontSize: "0.8rem",
+              fontWeight: 600,
+              color: cat.color,
+              boxShadow: `0 2px 10px ${cat.color}18`,
+              animation: `badge-pop 0.4s ${ci * 0.08}s cubic-bezier(0.34,1.56,0.64,1) both`,
+            }}>
+              <span>{cat.icon}</span>
+              <span>{cat.category}</span>
+              <span style={{
+                width: 18, height: 18, borderRadius: "50%",
+                background: `${cat.color}18`,
+                display: "inline-flex", alignItems: "center", justifyContent: "center",
+                fontSize: "0.68rem", fontWeight: 800, color: cat.color,
+              }}>{cat.items.length}</span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* ── Main content ── */}
+      <div style={{ maxWidth: 860, margin: "0 auto", padding: "32px clamp(16px,4vw,48px) 80px" }}>
+
+        {/* Search results mode */}
+        {filtered ? (
+          filtered.length === 0 ? (
+            <div style={{ textAlign: "center", padding: "60px 0", color: "#9b6b8a" }}>
+              <div style={{ fontSize: "3rem", marginBottom: 16 }}>🍃</div>
+              <p style={{ fontSize: "1rem", fontWeight: 600 }}>No results for "{searchTerm}"</p>
+              <p style={{ fontSize: "0.88rem", marginTop: 8, opacity: 0.7 }}>Try a different keyword or browse categories below.</p>
+              <button className="btn-outline" onClick={() => setSearchTerm("")} style={{ marginTop: 20 }}>Clear search</button>
+            </div>
+          ) : (
+            <div>
+              <p style={{ fontSize: "0.83rem", color: "#9b6b8a", marginBottom: 20 }}>
+                {filtered.length} result{filtered.length !== 1 ? "s" : ""} for <strong>"{searchTerm}"</strong>
+                <button onClick={() => setSearchTerm("")} style={{ marginLeft: 10, color: "#ff6b9d", fontSize: "0.8rem", fontWeight: 600, background: "none", border: "none", cursor: "pointer" }}>✕ clear</button>
+              </p>
+              {filtered.map((item, i) => (
+                <div key={item.key}>
+                  <div style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: item.accent, marginBottom: 6, opacity: 0.85 }}>
+                    {item.catIcon} {item.catName}
+                  </div>
+                  <FaqAccordionItem
+                    q={item.q}
+                    a={item.a}
+                    accent={item.accent}
+                    isOpen={openKey === `search-${i}`}
+                    onToggle={() => toggle(`search-${i}`)}
+                    index={i}
+                  />
+                </div>
+              ))}
+            </div>
+          )
+        ) : (
+          /* Category mode */
+          FAQ_DATA.map((cat, ci) => (
+            <div key={ci} style={{ marginBottom: 44 }}>
+              {/* Category header */}
+              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 18 }}>
+                <div style={{
+                  width: 42, height: 42,
+                  borderRadius: 14,
+                  background: `linear-gradient(135deg, ${cat.color}, ${cat.color}bb)`,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  fontSize: "1.2rem",
+                  boxShadow: `0 4px 16px ${cat.color}44`,
+                  flexShrink: 0,
+                }}>{cat.icon}</div>
+                <div>
+                  <div style={{
+                    fontFamily: "'Noto Serif JP', serif",
+                    fontWeight: 700,
+                    fontSize: "1.05rem",
+                    color: "#2d1b2e",
+                  }}>{cat.category}</div>
+                  <div style={{ fontSize: "0.75rem", color: cat.color, fontWeight: 600, marginTop: 2 }}>
+                    {cat.items.length} question{cat.items.length !== 1 ? "s" : ""}
+                  </div>
+                </div>
+                {/* Decorative line */}
+                <div style={{
+                  flex: 1,
+                  height: 1,
+                  background: `linear-gradient(90deg, ${cat.color}44, transparent)`,
+                  marginLeft: 8,
+                }} />
+              </div>
+
+              {cat.items.map((item, ii) => {
+                const key = `${ci}-${ii}`;
+                return (
+                  <FaqAccordionItem
+                    key={key}
+                    q={item.q}
+                    a={item.a}
+                    accent={cat.color}
+                    isOpen={openKey === key}
+                    onToggle={() => toggle(key)}
+                    index={ii}
+                  />
+                );
+              })}
+            </div>
+          ))
+        )}
+
+        {/* ── Contact footer card ── */}
+        <div style={{
+          marginTop: 16,
+          borderRadius: 24,
+          overflow: "hidden",
+          background: "linear-gradient(135deg, #2d1b2e 0%, #4a1942 60%, #ff6b9d22 100%)",
+          padding: "40px 36px",
+          textAlign: "center",
+          position: "relative",
+        }}>
+          {/* Subtle orb */}
+          <div style={{
+            position: "absolute", top: -40, right: -40,
+            width: 160, height: 160,
+            borderRadius: "50%",
+            background: "radial-gradient(circle, #ff6b9d33, transparent 70%)",
+            pointerEvents: "none",
+          }} />
+          <div style={{ fontSize: "2.2rem", marginBottom: 12 }}>🌸</div>
+          <h3 style={{
+            fontFamily: "'Noto Serif JP', serif",
+            fontSize: "1.25rem",
+            color: "white",
+            fontWeight: 700,
+            marginBottom: 10,
+          }}>Still need help?</h3>
+          <p style={{ color: "rgba(255,255,255,0.62)", fontSize: "0.9rem", lineHeight: 1.7, marginBottom: 24, maxWidth: 360, margin: "0 auto 24px" }}>
+            Our team is on hand every day from 11 AM – 11:30 PM.<br />We'd love to hear from you 🍵
           </p>
           <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
             <a href="tel:+912240019999" className="btn-primary" style={{ display: "inline-flex", alignItems: "center", gap: 8, textDecoration: "none" }}>
               📞 Call Us
             </a>
-            <a href="mailto:hello@sakurabites.in" className="btn-outline" style={{ display: "inline-flex", alignItems: "center", gap: 8, textDecoration: "none" }}>
-              ✉️ Email Us
-            </a>
+            <a href="mailto:hello@sakurabites.in" style={{
+              display: "inline-flex", alignItems: "center", gap: 8,
+              padding: "10px 24px", borderRadius: 50,
+              border: "2px solid rgba(255,255,255,0.25)",
+              color: "white", fontSize: "0.86rem", fontWeight: 600,
+              transition: "all 0.25s ease", textDecoration: "none",
+            }}
+              onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.1)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.45)"; }}
+              onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.25)"; }}
+            >✉️ Email Us</a>
           </div>
         </div>
       </div>
