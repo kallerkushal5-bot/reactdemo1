@@ -170,11 +170,126 @@ const injectStyles = () => {
       70%  { transform: scale(1.15); }
       100% { transform: scale(1);   opacity: 1; }
     }
+    @keyframes ripple {
+      0%   { transform: scale(0); opacity: 0.5; }
+      100% { transform: scale(4); opacity: 0; }
+    }
+    @keyframes nav-indicator-slide {
+      from { opacity: 0; transform: scaleX(0.4); }
+      to   { opacity: 1; transform: scaleX(1); }
+    }
+    @keyframes hero-badge-in {
+      0%   { transform: translateY(12px) scale(0.92); opacity: 0; }
+      100% { transform: translateY(0) scale(1); opacity: 1; }
+    }
+    @keyframes price-pop {
+      0%   { transform: scale(1); }
+      40%  { transform: scale(1.18); color: #ff4d8d; }
+      100% { transform: scale(1); }
+    }
+    @keyframes toast-in {
+      0%   { transform: translateY(30px) scale(0.9); opacity: 0; }
+      100% { transform: translateY(0) scale(1); opacity: 1; }
+    }
+    @keyframes hero-float {
+      0%, 100% { transform: translateY(0px) rotate(4deg); }
+      50%       { transform: translateY(-12px) rotate(4deg); }
+    }
+    @keyframes hero-float-1 {
+      0%, 100% { transform: translateY(0px) rotate(-6deg); }
+      50%       { transform: translateY(-10px) rotate(-6deg); }
+    }
+    @keyframes hero-float-2 {
+      0%, 100% { transform: translateY(0px) rotate(2deg); }
+      50%       { transform: translateY(-14px) rotate(2deg); }
+    }
     .faq-answer { animation: faq-expand 0.32s cubic-bezier(0.22,1,0.36,1) both; }
     .faq-card { transition: box-shadow 0.3s ease, border-color 0.3s ease, transform 0.3s cubic-bezier(0.34,1.56,0.64,1); }
     .faq-card:hover { transform: translateY(-4px); }
     .faq-icon-bubble { transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s cubic-bezier(0.34,1.56,0.64,1); }
     .faq-card:hover .faq-icon-bubble { transform: scale(1.14) rotate(-8deg); }
+
+    /* ── Navbar enhancements ── */
+    .nav-link { position: relative; overflow: hidden; }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 4px; left: 50%; right: 50%;
+      height: 2px;
+      background: #ff6b9d;
+      border-radius: 2px;
+      transition: left 0.25s ease, right 0.25s ease;
+    }
+    .nav-link:hover::after { left: 14px; right: 14px; }
+    .nav-link.active::after { display: none; }
+    .nav-help-btn {
+      background: linear-gradient(135deg, #7c6af7, #a78bfa) !important;
+      color: white !important;
+      box-shadow: 0 3px 14px rgba(124,106,247,0.38) !important;
+    }
+    .nav-help-btn:hover {
+      background: linear-gradient(135deg, #6c5ce7, #9775fa) !important;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 22px rgba(124,106,247,0.5) !important;
+    }
+    .nav-help-btn.active {
+      background: linear-gradient(135deg, #6c5ce7, #9775fa) !important;
+      box-shadow: 0 4px 18px rgba(124,106,247,0.55) !important;
+    }
+
+    /* ── Dish card shimmer on hover ── */
+    .dish-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%; width: 60%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+      transition: left 0.5s ease;
+      pointer-events: none;
+      z-index: 4;
+    }
+    .dish-card:hover::before { left: 140%; }
+    .dish-card { position: relative; }
+
+    /* ── Price animation ── */
+    .price-animated { display: inline-block; }
+    .dish-card:hover .price-animated { animation: price-pop 0.4s ease; }
+
+    /* ── Hero floating cards improved ── */
+    .hero-card-0 { animation: hero-float   3.8s 0s ease-in-out infinite !important; }
+    .hero-card-1 { animation: hero-float-1 4.2s 0.6s ease-in-out infinite !important; }
+    .hero-card-2 { animation: hero-float-2 3.5s 1.1s ease-in-out infinite !important; }
+
+    /* ── Toast notification ── */
+    .cart-toast {
+      position: fixed; bottom: 28px; right: 28px; z-index: 9999;
+      background: linear-gradient(135deg, #2d1b2e, #4a1942);
+      color: white; padding: 14px 22px;
+      border-radius: 16px;
+      font-size: 0.88rem; font-weight: 600;
+      box-shadow: 0 8px 32px rgba(45,27,46,0.35);
+      animation: toast-in 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+      display: flex; align-items: center; gap: 10;
+      border: 1px solid rgba(255,158,181,0.25);
+    }
+
+    /* ── FAQ category click-filter ── */
+    .faq-cat-pill {
+      cursor: pointer !important;
+      transition: transform 0.22s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.22s ease, background 0.22s ease !important;
+    }
+    .faq-cat-pill:hover { transform: translateY(-3px) scale(1.04); }
+    .faq-cat-pill.selected { color: white !important; border-color: transparent !important; }
+
+    /* ── Menu category tab glow ── */
+    .menu-tab-active {
+      position: relative;
+    }
+    .menu-tab-active::after {
+      content: '';
+      position: absolute; bottom: -4px; left: 20%; right: 20%;
+      height: 3px; border-radius: 3px;
+      background: rgba(255,255,255,0.55);
+    }
 
     .page-enter { animation: page-enter 0.55s cubic-bezier(0.22, 1, 0.36, 1) both; }
     .float-up { animation: float-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) both; }
@@ -552,10 +667,17 @@ function Logo({ small }) {
 function Navbar({ activePage, navigate, cartCount }) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrollPct, setScrollPct] = useState(0);
   const pages = ["Home", "Menu", "About", "Order", "Delivery", "Payment", "Cart", "Checkout", "Help"];
+  const NAV_ICONS = { Home: "🏠", Menu: "🍱", About: "🌸", Order: "⚡", Delivery: "🛵", Payment: "💳", Cart: "🛒", Checkout: "✅", Help: "❓" };
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 40);
+      const doc = document.documentElement;
+      const pct = (window.scrollY / (doc.scrollHeight - doc.clientHeight)) * 100;
+      setScrollPct(Math.min(100, pct));
+    };
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -563,42 +685,84 @@ function Navbar({ activePage, navigate, cartCount }) {
   return (
     <nav style={{
       position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000,
-      background: scrolled ? "rgba(253,240,245,0.92)" : "rgba(253,240,245,0.75)",
-      backdropFilter: "blur(18px)",
-      borderBottom: scrolled ? "1px solid rgba(255,158,181,0.3)" : "1px solid rgba(255,158,181,0.1)",
+      background: scrolled ? "rgba(253,240,245,0.95)" : "rgba(253,240,245,0.78)",
+      backdropFilter: "blur(20px)",
+      borderBottom: scrolled ? "1px solid rgba(255,158,181,0.35)" : "1px solid rgba(255,158,181,0.12)",
       transition: "all 0.35s ease",
       animation: "navbar-drop 0.6s ease both",
-      boxShadow: scrolled ? "0 4px 30px rgba(255,107,157,0.1)" : "none",
+      boxShadow: scrolled ? "0 4px 30px rgba(255,107,157,0.12)" : "none",
     }}>
+      {/* Scroll progress bar */}
+      <div style={{
+        position: "absolute", top: 0, left: 0,
+        height: 3,
+        width: `${scrollPct}%`,
+        background: "linear-gradient(90deg, #ff6b9d, #ffd580, #87ceeb)",
+        borderRadius: "0 3px 3px 0",
+        transition: "width 0.1s linear",
+        zIndex: 10,
+      }} />
+
       <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 clamp(16px,4vw,48px)", height: 64, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <button onClick={() => navigate("Home")} style={{ background: "none", border: "none", cursor: "pointer" }}>
           <Logo small />
         </button>
 
         {/* Desktop nav */}
-        <div className="hide-mobile" style={{ display: "flex", alignItems: "center", gap: 4 }}>
-          {pages.map(p => (
-            <button key={p} className={`nav-link ${activePage === p ? "active" : ""}`} onClick={() => navigate(p)}>
-              {p === "Cart" ? `🛒 ${cartCount > 0 ? `(${cartCount})` : ""}` : p}
-            </button>
-          ))}
+        <div className="hide-mobile" style={{ display: "flex", alignItems: "center", gap: 3 }}>
+          {pages.map(p => {
+            const isHelp = p === "Help";
+            const isActive = activePage === p;
+            return (
+              <button
+                key={p}
+                className={`nav-link ${isActive ? "active" : ""} ${isHelp ? "nav-help-btn" : ""}`}
+                onClick={() => navigate(p)}
+                title={p}
+                style={isHelp && isActive ? { background: "linear-gradient(135deg,#6c5ce7,#9775fa)" } : {}}
+              >
+                {p === "Cart"
+                  ? <span>🛒{cartCount > 0 ? <span style={{ fontSize: "0.72rem", marginLeft: 3 }}>({cartCount})</span> : ""}</span>
+                  : p === "Help"
+                  ? <span style={{ display: "flex", alignItems: "center", gap: 5 }}>❓ Help</span>
+                  : p}
+              </button>
+            );
+          })}
         </div>
 
-        {/* Mobile */}
-        <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+        {/* Mobile right cluster */}
+        <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+          {/* Help shortcut on mobile */}
+          <button
+            onClick={() => navigate("Help")}
+            style={{
+              background: activePage === "Help" ? "linear-gradient(135deg,#6c5ce7,#9775fa)" : "rgba(124,106,247,0.12)",
+              border: "none", cursor: "pointer",
+              width: 36, height: 36, borderRadius: "50%",
+              fontSize: "1rem",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              transition: "all 0.22s",
+              boxShadow: activePage === "Help" ? "0 3px 14px rgba(124,106,247,0.4)" : "none",
+            }}
+            title="Help"
+          >❓</button>
+
           <button onClick={() => navigate("Cart")} style={{ position: "relative", background: "none", border: "none", cursor: "pointer", fontSize: "1.2rem" }}>
             🛒
             {cartCount > 0 && (
               <span style={{
                 position: "absolute", top: -6, right: -6,
-                background: "#ff6b9d", color: "white",
+                background: "linear-gradient(135deg,#ff6b9d,#ff9eb5)", color: "white",
                 width: 18, height: 18, borderRadius: "50%",
                 fontSize: "0.65rem", fontWeight: 700,
                 display: "flex", alignItems: "center", justifyContent: "center",
                 animation: "cart-bounce 0.4s ease",
+                boxShadow: "0 2px 8px rgba(255,107,157,0.45)",
               }}>{cartCount}</span>
             )}
           </button>
+
           <button
             style={{ display: "none", background: "none", border: "none", cursor: "pointer", fontSize: "1.4rem" }}
             className="show-mobile-only"
@@ -609,20 +773,25 @@ function Navbar({ activePage, navigate, cartCount }) {
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile menu — grouped with icons */}
       {menuOpen && (
         <div style={{
-          background: "rgba(253,240,245,0.97)", backdropFilter: "blur(16px)",
+          background: "rgba(253,240,245,0.98)", backdropFilter: "blur(20px)",
           borderTop: "1px solid rgba(255,158,181,0.2)",
-          padding: "16px clamp(16px,4vw,48px)",
-          display: "flex", flexDirection: "column", gap: 4,
+          padding: "12px clamp(16px,4vw,48px) 20px",
+          display: "grid", gridTemplateColumns: "1fr 1fr",
+          gap: 6,
           animation: "float-up 0.3s ease",
         }}>
           {pages.map(p => (
-            <button key={p} className={`nav-link ${activePage === p ? "active" : ""}`}
+            <button key={p}
+              className={`nav-link ${activePage === p ? "active" : ""} ${p === "Help" ? "nav-help-btn" : ""}`}
               onClick={() => { navigate(p); setMenuOpen(false); }}
-              style={{ textAlign: "left", width: "fit-content" }}
-            >{p}</button>
+              style={{ textAlign: "left", display: "flex", alignItems: "center", gap: 7, padding: "9px 14px" }}
+            >
+              <span style={{ fontSize: "0.9rem" }}>{NAV_ICONS[p]}</span>
+              {p === "Cart" && cartCount > 0 ? `${p} (${cartCount})` : p}
+            </button>
           ))}
         </div>
       )}
@@ -633,14 +802,72 @@ function Navbar({ activePage, navigate, cartCount }) {
 /* ═══════════════════════════════════════════════════════════
    PAGE: HOME
    ═══════════════════════════════════════════════════════════ */
+function PromoCountdown() {
+  const [time, setTime] = useState({ h: 2, m: 47, s: 59 });
+  useEffect(() => {
+    const t = setInterval(() => {
+      setTime(prev => {
+        let { h, m, s } = prev;
+        s--;
+        if (s < 0) { s = 59; m--; }
+        if (m < 0) { m = 59; h--; }
+        if (h < 0) { h = 2; m = 47; s = 59; }
+        return { h, m, s };
+      });
+    }, 1000);
+    return () => clearInterval(t);
+  }, []);
+  const pad = n => String(n).padStart(2, "0");
+  return (
+    <div style={{
+      display: "inline-flex", alignItems: "center", gap: 6,
+      background: "rgba(255,213,128,0.18)", borderRadius: 50,
+      padding: "7px 16px", marginBottom: 18,
+      border: "1px solid rgba(255,213,128,0.35)",
+      animation: "hero-badge-in 0.6s 0.4s ease both",
+      backdropFilter: "blur(8px)",
+    }}>
+      <span style={{ fontSize: "0.75rem", color: "#FFD580", fontWeight: 700, letterSpacing: "0.06em" }}>⏰ OFFER ENDS IN</span>
+      {[pad(time.h), pad(time.m), pad(time.s)].map((v, i) => (
+        <span key={i} style={{ display: "flex", alignItems: "center", gap: 4 }}>
+          {i > 0 && <span style={{ color: "rgba(255,213,128,0.5)", fontWeight: 700 }}>:</span>}
+          <span style={{
+            background: "rgba(255,213,128,0.22)", borderRadius: 6,
+            padding: "2px 7px", fontSize: "0.82rem", fontWeight: 800,
+            color: "#FFD580", minWidth: 28, textAlign: "center",
+            fontVariantNumeric: "tabular-nums",
+          }}>{v}</span>
+        </span>
+      ))}
+    </div>
+  );
+}
+
 function HomePage({ navigate, addToCart }) {
+  const [toastItem, setToastItem] = useState(null);
+
+  const quickAdd = (item) => {
+    addToCart(item);
+    setToastItem(item.name);
+    setTimeout(() => setToastItem(null), 2200);
+  };
+
   return (
     <div className="page-enter">
+      {/* Toast */}
+      {toastItem && (
+        <div className="cart-toast">
+          <span style={{ fontSize: "1.1rem" }}>🛒</span>
+          <span><strong>{toastItem}</strong> added to cart!</span>
+        </div>
+      )}
+
       {/* Hero */}
       <SkyBackground variant="sunset" style={{ minHeight: "100vh", display: "flex", alignItems: "center" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto", padding: "80px clamp(16px,4vw,48px) 60px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "center" }}>
           <div className="float-up">
             <div className="section-sub float-up" style={{ marginBottom: 12 }}>🌸 Authentic Japanese Cuisine</div>
+            <PromoCountdown />
             <h1 className="float-up-d1" style={{
               fontFamily: "'Noto Serif JP', serif",
               fontSize: "clamp(2.4rem, 6vw, 4.2rem)",
@@ -668,7 +895,7 @@ function HomePage({ navigate, addToCart }) {
             {/* Stats */}
             <div style={{ display: "flex", gap: 32, marginTop: 44 }}>
               {[["200+", "Menu Items"], ["50K+", "Happy Guests"], ["4.9★", "Rating"]].map(([n, l]) => (
-                <div key={l}>
+                <div key={l} style={{ textAlign: "center" }}>
                   <div style={{ fontFamily: "'Noto Serif JP', serif", fontSize: "1.5rem", fontWeight: 700, color: "white", textShadow: "0 2px 8px rgba(45,27,46,0.2)" }}>{n}</div>
                   <div style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.75)", letterSpacing: "0.06em" }}>{l}</div>
                 </div>
@@ -676,26 +903,41 @@ function HomePage({ navigate, addToCart }) {
             </div>
           </div>
 
-          {/* Featured dish cards */}
+          {/* Featured dish cards — now with continuous float & quick-add */}
           <div style={{ position: "relative", height: 420 }} className="hide-mobile">
             {FEATURED_DISHES.map((d, i) => (
-              <div key={d.id} className="dish-card" style={{
-                position: "absolute",
-                width: 200,
-                left: i === 0 ? "50%" : i === 1 ? "10%" : "38%",
-                top: i === 0 ? "0%" : i === 1 ? "32%" : "52%",
-                transform: `rotate(${i === 0 ? "4deg" : i === 1 ? "-6deg" : "2deg"})`,
-                animation: `float-up ${0.5 + i * 0.12}s ease both`,
-                zIndex: 3 - i,
-              }}>
+              <div
+                key={d.id}
+                className={`dish-card hero-card-${i}`}
+                style={{
+                  position: "absolute",
+                  width: 210,
+                  left: i === 0 ? "50%" : i === 1 ? "8%" : "36%",
+                  top: i === 0 ? "0%" : i === 1 ? "32%" : "52%",
+                  transform: `rotate(${i === 0 ? "4deg" : i === 1 ? "-6deg" : "2deg"})`,
+                  zIndex: 3 - i,
+                  cursor: "pointer",
+                }}
+                onClick={() => quickAdd(d)}
+              >
                 <img src={d.img} alt={d.name} style={{ height: 120 }} />
                 <div style={{ padding: "12px 14px" }}>
                   <div style={{ fontSize: "0.65rem", color: "#ff6b9d", fontWeight: 700, letterSpacing: "0.08em", marginBottom: 4 }}>{d.highlight}</div>
                   <div style={{ fontFamily: "'Noto Serif JP', serif", fontWeight: 600, fontSize: "0.88rem", color: "#2d1b2e" }}>{d.name}</div>
-                  <div style={{ fontSize: "0.78rem", color: "#9b6b8a", marginTop: 4 }}>₹{d.price}</div>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 6 }}>
+                    <span className="price-animated" style={{ fontSize: "0.78rem", color: "#9b6b8a" }}>₹{d.price}</span>
+                    <span style={{ fontSize: "0.68rem", background: "linear-gradient(135deg,#ff6b9d22,#ff9eb544)", color: "#ff6b9d", borderRadius: 50, padding: "2px 8px", fontWeight: 700 }}>+ Add</span>
+                  </div>
                 </div>
               </div>
             ))}
+            {/* Decorative glow behind cards */}
+            <div style={{
+              position: "absolute", top: "20%", left: "20%",
+              width: 200, height: 200, borderRadius: "50%",
+              background: "radial-gradient(circle, rgba(255,107,157,0.18), transparent 70%)",
+              pointerEvents: "none",
+            }} />
           </div>
         </div>
       </SkyBackground>
@@ -786,9 +1028,27 @@ function HomePage({ navigate, addToCart }) {
 /* ═══════════════════════════════════════════════════════════
    PAGE: MENU
    ═══════════════════════════════════════════════════════════ */
+const DISH_RATINGS = { 1: 4.7, 2: 4.9, 3: 4.5, 4: 4.8, 5: 4.9, 6: 4.8, 7: 4.7, 8: 4.6, 9: 4.9, 10: 4.6, 11: 4.8, 12: 4.7 };
+
+function StarRating({ score }) {
+  const full = Math.floor(score);
+  const half = score % 1 >= 0.5;
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 3 }}>
+      {[...Array(5)].map((_, i) => (
+        <span key={i} style={{ fontSize: "0.6rem", color: i < full ? "#FFD580" : (i === full && half ? "#FFD580" : "#d4b8c8"), lineHeight: 1 }}>
+          {i < full ? "★" : i === full && half ? "⯨" : "☆"}
+        </span>
+      ))}
+      <span style={{ fontSize: "0.7rem", color: "#9b6b8a", marginLeft: 2, fontWeight: 600 }}>{score}</span>
+    </div>
+  );
+}
+
 function MenuPage({ addToCart }) {
   const [activeCategory, setActiveCategory] = useState("starters");
   const [addedId, setAddedId] = useState(null);
+  const [hoveredId, setHoveredId] = useState(null);
   const categories = [
     { key: "starters", label: "🥢 Starters", jp: "前菜" },
     { key: "mains", label: "🍜 Main Course", jp: "主菜" },
@@ -812,27 +1072,40 @@ function MenuPage({ addToCart }) {
         </p>
       </SkyBackground>
 
-      {/* Category tabs */}
+      {/* Category tabs with item count badge */}
       <div style={{ maxWidth: 1280, margin: "-24px auto 0", padding: "0 clamp(16px,4vw,48px)", position: "relative", zIndex: 10 }}>
         <div className="glass-card" style={{ display: "flex", gap: 8, padding: "10px", overflowX: "auto", scrollbarWidth: "none" }}>
-          {categories.map(c => (
-            <button key={c.key} onClick={() => setActiveCategory(c.key)} style={{
-              padding: "12px 28px",
-              borderRadius: 12,
-              border: "none",
-              cursor: "pointer",
-              fontFamily: "inherit",
-              fontWeight: 600,
-              fontSize: "0.88rem",
-              whiteSpace: "nowrap",
-              transition: "all 0.25s",
-              background: activeCategory === c.key ? "linear-gradient(135deg,#ff6b9d,#ff9eb5)" : "transparent",
-              color: activeCategory === c.key ? "white" : "#9b6b8a",
-              boxShadow: activeCategory === c.key ? "0 4px 16px rgba(255,107,157,0.35)" : "none",
-            }}>
-              {c.label} <span style={{ fontSize: "0.72rem", opacity: 0.8, marginLeft: 4 }}>{c.jp}</span>
-            </button>
-          ))}
+          {categories.map(c => {
+            const isActive = activeCategory === c.key;
+            return (
+              <button key={c.key} onClick={() => setActiveCategory(c.key)} style={{
+                padding: "12px 28px",
+                borderRadius: 12,
+                border: "none",
+                cursor: "pointer",
+                fontFamily: "inherit",
+                fontWeight: 600,
+                fontSize: "0.88rem",
+                whiteSpace: "nowrap",
+                transition: "all 0.25s",
+                background: isActive ? "linear-gradient(135deg,#ff6b9d,#ff9eb5)" : "transparent",
+                color: isActive ? "white" : "#9b6b8a",
+                boxShadow: isActive ? "0 4px 16px rgba(255,107,157,0.35)" : "none",
+                position: "relative",
+              }}>
+                {c.label} <span style={{ fontSize: "0.72rem", opacity: 0.8, marginLeft: 4 }}>{c.jp}</span>
+                {/* Count badge */}
+                <span style={{
+                  position: "absolute", top: -6, right: -4,
+                  background: isActive ? "rgba(255,255,255,0.3)" : "rgba(255,107,157,0.15)",
+                  color: isActive ? "white" : "#ff6b9d",
+                  width: 18, height: 18, borderRadius: "50%",
+                  fontSize: "0.62rem", fontWeight: 800,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                }}>{MENU_ITEMS[c.key].length}</span>
+              </button>
+            );
+          })}
         </div>
       </div>
 
@@ -840,16 +1113,33 @@ function MenuPage({ addToCart }) {
       <div style={{ maxWidth: 1280, margin: "0 auto", padding: "40px clamp(16px,4vw,48px) 80px" }}>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 24 }} className="grid-4">
           {MENU_ITEMS[activeCategory].map((item, i) => (
-            <div key={item.id} className="dish-card" style={{ animation: `float-up 0.5s ${i * 0.08}s ease both` }}>
+            <div
+              key={item.id}
+              className="dish-card"
+              style={{ animation: `float-up 0.5s ${i * 0.08}s ease both` }}
+              onMouseEnter={() => setHoveredId(item.id)}
+              onMouseLeave={() => setHoveredId(null)}
+            >
               <div style={{ position: "relative", overflow: "hidden" }}>
-                <img src={item.img} alt={item.name} style={{ height: 200 }} />
+                <img src={item.img} alt={item.name} style={{ height: 200, transition: "transform 0.5s ease", transform: hoveredId === item.id ? "scale(1.1)" : "scale(1)" }} />
                 {item.tag && <span className="tag-badge" style={{ position: "absolute", top: 12, left: 12 }}>{item.tag}</span>}
+                {/* Quick-view overlay */}
+                <div style={{
+                  position: "absolute", inset: 0,
+                  background: "linear-gradient(to top, rgba(45,27,46,0.72), transparent)",
+                  opacity: hoveredId === item.id ? 1 : 0,
+                  transition: "opacity 0.3s ease",
+                  display: "flex", alignItems: "flex-end", padding: "14px",
+                }}>
+                  <span style={{ color: "rgba(255,255,255,0.85)", fontSize: "0.75rem", lineHeight: 1.5 }}>{item.desc}</span>
+                </div>
               </div>
               <div style={{ padding: "18px 18px 20px" }}>
-                <h3 style={{ fontFamily: "'Noto Serif JP', serif", fontWeight: 600, fontSize: "0.98rem", marginBottom: 6, color: "#2d1b2e" }}>{item.name}</h3>
-                <p style={{ fontSize: "0.78rem", color: "#9b6b8a", lineHeight: 1.55, marginBottom: 16 }}>{item.desc}</p>
+                <h3 style={{ fontFamily: "'Noto Serif JP', serif", fontWeight: 600, fontSize: "0.98rem", marginBottom: 4, color: "#2d1b2e" }}>{item.name}</h3>
+                <StarRating score={DISH_RATINGS[item.id] || 4.7} />
+                <p style={{ fontSize: "0.78rem", color: "#9b6b8a", lineHeight: 1.55, marginTop: 8, marginBottom: 16 }}>{item.desc}</p>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <span style={{ fontWeight: 700, color: "#ff6b9d", fontSize: "1.05rem" }}>₹{item.price}</span>
+                  <span className="price-animated" style={{ fontWeight: 700, color: "#ff6b9d", fontSize: "1.05rem" }}>₹{item.price}</span>
                   <button
                     className="btn-primary"
                     style={{
@@ -1700,15 +1990,15 @@ const FAQ_DATA = [
   },
 ];
 
-function FaqAccordionItem({ q, a, accent, isOpen, onToggle, index }) {
+function FaqAccordionItem({ q, a, accent, isOpen, onToggle, index, voteState, onVote }) {
   const answerRef = useRef(null);
   const [height, setHeight] = useState(0);
 
   useEffect(() => {
     if (answerRef.current) {
-      setHeight(isOpen ? answerRef.current.scrollHeight : 0);
+      setHeight(isOpen ? answerRef.current.scrollHeight + 56 : 0);
     }
-  }, [isOpen]);
+  }, [isOpen, voteState]);
 
   return (
     <div
@@ -1845,6 +2135,31 @@ function FaqAccordionItem({ q, a, accent, isOpen, onToggle, index }) {
             >
               {a}
             </p>
+            {/* Was this helpful? */}
+            <div style={{ marginTop: 16, display: "flex", alignItems: "center", gap: 10 }}>
+              <span style={{ fontSize: "0.75rem", color: "#9b6b8a", fontWeight: 600 }}>Was this helpful?</span>
+              {[["👍", "yes"], ["👎", "no"]].map(([emoji, val]) => (
+                <button
+                  key={val}
+                  onClick={(e) => { e.stopPropagation(); onVote && onVote(val); }}
+                  style={{
+                    background: voteState === val ? `${accent}22` : "rgba(255,158,181,0.08)",
+                    border: `1.5px solid ${voteState === val ? accent : "rgba(255,158,181,0.2)"}`,
+                    borderRadius: 50, padding: "3px 12px",
+                    cursor: "pointer", fontSize: "0.8rem",
+                    color: voteState === val ? accent : "#9b6b8a",
+                    fontWeight: voteState === val ? 700 : 500,
+                    transition: "all 0.22s",
+                    transform: voteState === val ? "scale(1.08)" : "scale(1)",
+                  }}
+                >{emoji}</button>
+              ))}
+              {voteState && (
+                <span style={{ fontSize: "0.72rem", color: accent, fontWeight: 600, animation: "fade-in 0.3s ease" }}>
+                  {voteState === "yes" ? "Thanks! 🌸" : "We'll improve it 🍵"}
+                </span>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -1853,15 +2168,15 @@ function FaqAccordionItem({ q, a, accent, isOpen, onToggle, index }) {
 }
 
 function HelpPage() {
-  // openKey = "catIdx-itemIdx" or null
   const [openKey, setOpenKey] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [activeCat, setActiveCat] = useState(null); // null = show all
+  const [votes, setVotes] = useState({}); // key → "yes"|"no"
 
   const toggle = (key) => setOpenKey(prev => (prev === key ? null : key));
 
-  // Flatten for search mode
   const allItems = FAQ_DATA.flatMap((cat, ci) =>
-    cat.items.map((item, ii) => ({ ...item, accent: cat.color, catIcon: cat.icon, catName: cat.category, key: `${ci}-${ii}` }))
+    cat.items.map((item, ii) => ({ ...item, accent: cat.color, catIcon: cat.icon, catName: cat.category, catIdx: ci, key: `${ci}-${ii}` }))
   );
 
   const filtered = searchTerm.trim()
@@ -1872,6 +2187,13 @@ function HelpPage() {
     : null;
 
   const totalFaqs = allItems.length;
+
+  const visibleCats = activeCat !== null
+    ? FAQ_DATA.filter((_, i) => i === activeCat)
+    : FAQ_DATA;
+  const activeCatObj = activeCat !== null ? FAQ_DATA[activeCat] : null;
+
+  const vote = (key, val) => setVotes(prev => ({ ...prev, [key]: prev[key] === val ? null : val }));
 
   return (
     <div className="page-enter" style={{ paddingTop: 64, minHeight: "100vh", background: "#fdf0f5" }}>
@@ -1884,7 +2206,6 @@ function HelpPage() {
         padding: "72px clamp(16px,4vw,48px) 80px",
         textAlign: "center",
       }}>
-        {/* Floating colour orbs */}
         {[
           { size: 280, top: "-80px", left: "-60px", color: "#ff6b9d", delay: "0s" },
           { size: 200, top: "20px",  right: "-50px", color: "#ffd580", delay: "1.5s" },
@@ -1892,50 +2213,32 @@ function HelpPage() {
         ].map((orb, i) => (
           <div key={i} style={{
             position: "absolute",
-            width: orb.size,
-            height: orb.size,
-            borderRadius: "50%",
+            width: orb.size, height: orb.size, borderRadius: "50%",
             background: `radial-gradient(circle, ${orb.color}33, transparent 70%)`,
-            top: orb.top,
-            left: orb.left,
-            right: orb.right,
-            bottom: orb.bottom,
+            top: orb.top, left: orb.left, right: orb.right, bottom: orb.bottom,
             animation: `orb-drift ${5 + i * 1.5}s ${orb.delay} ease-in-out infinite`,
             pointerEvents: "none",
           }} />
         ))}
-
-        {/* Floating sakura petals */}
         {["8%","22%","40%","60%","78%","92%"].map((left, i) => (
           <div key={i} style={{
             position: "absolute",
-            top: `${8 + (i % 3) * 18}%`,
-            left,
-            fontSize: "1.1rem",
-            opacity: 0.18 + (i % 3) * 0.06,
+            top: `${8 + (i % 3) * 18}%`, left,
+            fontSize: "1.1rem", opacity: 0.18 + (i % 3) * 0.06,
             animation: `petal-spin ${7 + i * 1.2}s ${i * 0.4}s linear infinite`,
             pointerEvents: "none",
           }}>🌸</div>
         ))}
 
         <div style={{ position: "relative", zIndex: 2 }}>
-          <div className="section-sub float-up" style={{ color: "rgba(255,213,128,0.9)", marginBottom: 10 }}>
-            ✦ ヘルプセンター ✦
-          </div>
-          <h1
-            className="float-up-d1"
-            style={{
-              fontFamily: "'Noto Serif JP', serif",
-              fontSize: "clamp(2rem,5vw,3.2rem)",
-              fontWeight: 700,
-              color: "white",
-              textShadow: "0 4px 24px rgba(0,0,0,0.4)",
-              marginBottom: 12,
-              lineHeight: 1.2,
-            }}
-          >
-            Help & FAQ 🌸
-          </h1>
+          <div className="section-sub float-up" style={{ color: "rgba(255,213,128,0.9)", marginBottom: 10 }}>✦ ヘルプセンター ✦</div>
+          <h1 className="float-up-d1" style={{
+            fontFamily: "'Noto Serif JP', serif",
+            fontSize: "clamp(2rem,5vw,3.2rem)",
+            fontWeight: 700, color: "white",
+            textShadow: "0 4px 24px rgba(0,0,0,0.4)",
+            marginBottom: 12, lineHeight: 1.2,
+          }}>Help & FAQ 🌸</h1>
           <p className="float-up-d2" style={{ color: "rgba(255,255,255,0.72)", fontSize: "0.97rem", maxWidth: 500, margin: "0 auto 32px", lineHeight: 1.7 }}>
             {totalFaqs} questions answered — find yours below, or{" "}
             <a href="mailto:hello@sakurabites.in" style={{ color: "#ffd580", fontWeight: 700 }}>drop us a message</a>.
@@ -1943,74 +2246,117 @@ function HelpPage() {
 
           {/* Search bar */}
           <div className="float-up-d3" style={{ maxWidth: 480, margin: "0 auto", position: "relative" }}>
-            <div style={{
-              position: "absolute",
-              left: 18,
-              top: "50%",
-              transform: "translateY(-50%)",
-              fontSize: "1rem",
-              pointerEvents: "none",
-            }}>🔍</div>
+            <div style={{ position: "absolute", left: 18, top: "50%", transform: "translateY(-50%)", fontSize: "1rem", pointerEvents: "none" }}>🔍</div>
             <input
               className="input-field"
               placeholder="Search questions…"
               value={searchTerm}
-              onChange={e => { setSearchTerm(e.target.value); setOpenKey(null); }}
+              onChange={e => { setSearchTerm(e.target.value); setOpenKey(null); setActiveCat(null); }}
               style={{
-                paddingLeft: 46,
+                paddingLeft: 46, paddingRight: searchTerm ? 44 : 18,
                 background: "rgba(255,255,255,0.12)",
                 border: "1.5px solid rgba(255,255,255,0.2)",
-                color: "white",
-                backdropFilter: "blur(12px)",
+                color: "white", backdropFilter: "blur(12px)",
                 fontSize: "0.9rem",
               }}
             />
+            {searchTerm && (
+              <button onClick={() => setSearchTerm("")} style={{
+                position: "absolute", right: 14, top: "50%", transform: "translateY(-50%)",
+                background: "rgba(255,255,255,0.18)", border: "none", cursor: "pointer",
+                width: 24, height: 24, borderRadius: "50%",
+                fontSize: "0.7rem", color: "white",
+                display: "flex", alignItems: "center", justifyContent: "center",
+              }}>✕</button>
+            )}
           </div>
         </div>
       </div>
 
-      {/* ── Category pills (not shown during search) ── */}
+      {/* ── Clickable category pills ── */}
       {!filtered && (
         <div style={{
-          maxWidth: 860,
-          margin: "-1px auto 0",
+          maxWidth: 860, margin: "-1px auto 0",
           padding: "28px clamp(16px,4vw,48px) 0",
-          display: "flex",
-          gap: 10,
-          flexWrap: "wrap",
+          display: "flex", gap: 10, flexWrap: "wrap",
         }}>
+          {/* "All" pill */}
+          <div
+            className="faq-cat-pill"
+            onClick={() => setActiveCat(null)}
+            style={{
+              display: "flex", alignItems: "center", gap: 6,
+              padding: "7px 16px", borderRadius: 50,
+              background: activeCat === null ? "#2d1b2e" : "white",
+              border: `1.5px solid ${activeCat === null ? "#2d1b2e" : "rgba(45,27,46,0.15)"}`,
+              fontSize: "0.8rem", fontWeight: 600,
+              color: activeCat === null ? "white" : "#9b6b8a",
+              boxShadow: activeCat === null ? "0 4px 16px rgba(45,27,46,0.2)" : "0 2px 8px rgba(45,27,46,0.06)",
+              animation: "badge-pop 0.4s cubic-bezier(0.34,1.56,0.64,1) both",
+            }}
+          >
+            <span>🌐</span><span>All Topics</span>
+            <span style={{
+              width: 18, height: 18, borderRadius: "50%",
+              background: activeCat === null ? "rgba(255,255,255,0.22)" : "rgba(45,27,46,0.08)",
+              display: "inline-flex", alignItems: "center", justifyContent: "center",
+              fontSize: "0.68rem", fontWeight: 800,
+              color: activeCat === null ? "white" : "#9b6b8a",
+            }}>{totalFaqs}</span>
+          </div>
+
           {FAQ_DATA.map((cat, ci) => (
-            <div key={ci} style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 6,
-              padding: "7px 16px",
-              borderRadius: 50,
-              background: "white",
-              border: `1.5px solid ${cat.color}44`,
-              fontSize: "0.8rem",
-              fontWeight: 600,
-              color: cat.color,
-              boxShadow: `0 2px 10px ${cat.color}18`,
-              animation: `badge-pop 0.4s ${ci * 0.08}s cubic-bezier(0.34,1.56,0.64,1) both`,
-            }}>
+            <div
+              key={ci}
+              className={`faq-cat-pill ${activeCat === ci ? "selected" : ""}`}
+              onClick={() => { setActiveCat(activeCat === ci ? null : ci); setOpenKey(null); }}
+              style={{
+                display: "flex", alignItems: "center", gap: 6,
+                padding: "7px 16px", borderRadius: 50,
+                background: activeCat === ci ? cat.color : "white",
+                border: `1.5px solid ${activeCat === ci ? "transparent" : cat.color + "44"}`,
+                fontSize: "0.8rem", fontWeight: 600,
+                color: activeCat === ci ? "white" : cat.color,
+                boxShadow: activeCat === ci ? `0 4px 16px ${cat.color}44` : `0 2px 10px ${cat.color}18`,
+                animation: `badge-pop 0.4s ${ci * 0.08}s cubic-bezier(0.34,1.56,0.64,1) both`,
+              }}
+            >
               <span>{cat.icon}</span>
               <span>{cat.category}</span>
               <span style={{
                 width: 18, height: 18, borderRadius: "50%",
-                background: `${cat.color}18`,
+                background: activeCat === ci ? "rgba(255,255,255,0.28)" : `${cat.color}18`,
                 display: "inline-flex", alignItems: "center", justifyContent: "center",
-                fontSize: "0.68rem", fontWeight: 800, color: cat.color,
+                fontSize: "0.68rem", fontWeight: 800,
+                color: activeCat === ci ? "white" : cat.color,
               }}>{cat.items.length}</span>
             </div>
           ))}
         </div>
       )}
 
+      {/* ── Active category label ── */}
+      {activeCatObj && !filtered && (
+        <div style={{ maxWidth: 860, margin: "16px auto 0", padding: "0 clamp(16px,4vw,48px)" }}>
+          <div style={{
+            display: "inline-flex", alignItems: "center", gap: 8,
+            padding: "8px 18px", borderRadius: 50,
+            background: `${activeCatObj.color}12`,
+            border: `1px solid ${activeCatObj.color}33`,
+          }}>
+            <span>{activeCatObj.icon}</span>
+            <span style={{ fontSize: "0.82rem", fontWeight: 700, color: activeCatObj.color }}>{activeCatObj.category}</span>
+            <button onClick={() => setActiveCat(null)} style={{
+              background: "none", border: "none", cursor: "pointer",
+              color: activeCatObj.color, fontSize: "0.7rem", fontWeight: 700, opacity: 0.7,
+            }}>✕ clear</button>
+          </div>
+        </div>
+      )}
+
       {/* ── Main content ── */}
       <div style={{ maxWidth: 860, margin: "0 auto", padding: "32px clamp(16px,4vw,48px) 80px" }}>
 
-        {/* Search results mode */}
         {filtered ? (
           filtered.length === 0 ? (
             <div style={{ textAlign: "center", padding: "60px 0", color: "#9b6b8a" }}>
@@ -2031,96 +2377,70 @@ function HelpPage() {
                     {item.catIcon} {item.catName}
                   </div>
                   <FaqAccordionItem
-                    q={item.q}
-                    a={item.a}
-                    accent={item.accent}
+                    q={item.q} a={item.a} accent={item.accent}
                     isOpen={openKey === `search-${i}`}
                     onToggle={() => toggle(`search-${i}`)}
                     index={i}
+                    voteState={votes[`search-${i}`]}
+                    onVote={(v) => vote(`search-${i}`, v)}
                   />
                 </div>
               ))}
             </div>
           )
         ) : (
-          /* Category mode */
-          FAQ_DATA.map((cat, ci) => (
-            <div key={ci} style={{ marginBottom: 44 }}>
-              {/* Category header */}
-              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 18 }}>
-                <div style={{
-                  width: 42, height: 42,
-                  borderRadius: 14,
-                  background: `linear-gradient(135deg, ${cat.color}, ${cat.color}bb)`,
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: "1.2rem",
-                  boxShadow: `0 4px 16px ${cat.color}44`,
-                  flexShrink: 0,
-                }}>{cat.icon}</div>
-                <div>
+          visibleCats.map((cat, ciRaw) => {
+            const ci = activeCat !== null ? activeCat : FAQ_DATA.indexOf(cat);
+            return (
+              <div key={ci} style={{ marginBottom: 44 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 18 }}>
                   <div style={{
-                    fontFamily: "'Noto Serif JP', serif",
-                    fontWeight: 700,
-                    fontSize: "1.05rem",
-                    color: "#2d1b2e",
-                  }}>{cat.category}</div>
-                  <div style={{ fontSize: "0.75rem", color: cat.color, fontWeight: 600, marginTop: 2 }}>
-                    {cat.items.length} question{cat.items.length !== 1 ? "s" : ""}
+                    width: 42, height: 42, borderRadius: 14,
+                    background: `linear-gradient(135deg, ${cat.color}, ${cat.color}bb)`,
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    fontSize: "1.2rem", boxShadow: `0 4px 16px ${cat.color}44`, flexShrink: 0,
+                  }}>{cat.icon}</div>
+                  <div>
+                    <div style={{ fontFamily: "'Noto Serif JP', serif", fontWeight: 700, fontSize: "1.05rem", color: "#2d1b2e" }}>{cat.category}</div>
+                    <div style={{ fontSize: "0.75rem", color: cat.color, fontWeight: 600, marginTop: 2 }}>
+                      {cat.items.length} question{cat.items.length !== 1 ? "s" : ""}
+                    </div>
                   </div>
+                  <div style={{ flex: 1, height: 1, background: `linear-gradient(90deg, ${cat.color}44, transparent)`, marginLeft: 8 }} />
                 </div>
-                {/* Decorative line */}
-                <div style={{
-                  flex: 1,
-                  height: 1,
-                  background: `linear-gradient(90deg, ${cat.color}44, transparent)`,
-                  marginLeft: 8,
-                }} />
-              </div>
 
-              {cat.items.map((item, ii) => {
-                const key = `${ci}-${ii}`;
-                return (
-                  <FaqAccordionItem
-                    key={key}
-                    q={item.q}
-                    a={item.a}
-                    accent={cat.color}
-                    isOpen={openKey === key}
-                    onToggle={() => toggle(key)}
-                    index={ii}
-                  />
-                );
-              })}
-            </div>
-          ))
+                {cat.items.map((item, ii) => {
+                  const key = `${ci}-${ii}`;
+                  return (
+                    <FaqAccordionItem
+                      key={key} q={item.q} a={item.a} accent={cat.color}
+                      isOpen={openKey === key}
+                      onToggle={() => toggle(key)}
+                      index={ii}
+                      voteState={votes[key]}
+                      onVote={(v) => vote(key, v)}
+                    />
+                  );
+                })}
+              </div>
+            );
+          })
         )}
 
         {/* ── Contact footer card ── */}
         <div style={{
-          marginTop: 16,
-          borderRadius: 24,
-          overflow: "hidden",
+          marginTop: 16, borderRadius: 24, overflow: "hidden",
           background: "linear-gradient(135deg, #2d1b2e 0%, #4a1942 60%, #ff6b9d22 100%)",
-          padding: "40px 36px",
-          textAlign: "center",
-          position: "relative",
+          padding: "40px 36px", textAlign: "center", position: "relative",
         }}>
-          {/* Subtle orb */}
           <div style={{
             position: "absolute", top: -40, right: -40,
-            width: 160, height: 160,
-            borderRadius: "50%",
+            width: 160, height: 160, borderRadius: "50%",
             background: "radial-gradient(circle, #ff6b9d33, transparent 70%)",
             pointerEvents: "none",
           }} />
           <div style={{ fontSize: "2.2rem", marginBottom: 12 }}>🌸</div>
-          <h3 style={{
-            fontFamily: "'Noto Serif JP', serif",
-            fontSize: "1.25rem",
-            color: "white",
-            fontWeight: 700,
-            marginBottom: 10,
-          }}>Still need help?</h3>
+          <h3 style={{ fontFamily: "'Noto Serif JP', serif", fontSize: "1.25rem", color: "white", fontWeight: 700, marginBottom: 10 }}>Still need help?</h3>
           <p style={{ color: "rgba(255,255,255,0.62)", fontSize: "0.9rem", lineHeight: 1.7, marginBottom: 24, maxWidth: 360, margin: "0 auto 24px" }}>
             Our team is on hand every day from 11 AM – 11:30 PM.<br />We'd love to hear from you 🍵
           </p>
