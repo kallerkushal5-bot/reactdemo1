@@ -534,7 +534,7 @@ function Logo({ small }) {
 function Navbar({ activePage, navigate, cartCount }) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const pages = ["Home", "Menu", "About", "Order", "Delivery", "Payment", "Cart", "Checkout"];
+  const pages = ["Home", "Menu", "About", "Order", "Delivery", "Payment", "Cart", "Checkout", "Help"];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -1555,7 +1555,7 @@ function Footer({ navigate }) {
           <div>
             <div style={{ fontSize: "0.7rem", letterSpacing: "0.22em", textTransform: "uppercase", color: "#ff9eb5", marginBottom: 16 }}>Navigate</div>
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              {["Home", "Menu", "About", "Order", "Delivery"].map(p => (
+              {["Home", "Menu", "About", "Order", "Delivery", "Help"].map(p => (
                 <button key={p} onClick={() => navigate(p)} style={{ background: "none", border: "none", cursor: "pointer", fontFamily: "inherit", fontSize: "0.85rem", color: "rgba(255,240,245,0.55)", textAlign: "left", transition: "color 0.2s", padding: 0 }}
                   onMouseEnter={e => e.currentTarget.style.color = "#ff9eb5"}
                   onMouseLeave={e => e.currentTarget.style.color = "rgba(255,240,245,0.55)"}
@@ -1601,6 +1601,215 @@ function Footer({ navigate }) {
         </div>
       </div>
     </footer>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PAGE: HELP
+   ═══════════════════════════════════════════════════════════ */
+const FAQ_ITEMS = [
+  {
+    q: "What are your opening hours?",
+    a: "We're open every day from 11:00 AM to 11:30 PM — including weekends and public holidays. Last orders for dine-in are accepted at 10:45 PM.",
+    icon: "🕐",
+  },
+  {
+    q: "Do you accept reservations?",
+    a: "Yes! You can call us at +91 22 4001 9999 or email hello@sakurabites.in to reserve a table. Walk-ins are welcome based on availability, but we recommend booking for groups of 4 or more.",
+    icon: "📅",
+  },
+  {
+    q: "How do I track my delivery order?",
+    a: "Once your order is confirmed, you'll receive an SMS with a live tracking link. You can also check the Delivery page in the app for real-time status updates on your order.",
+    icon: "🛵",
+  },
+  {
+    q: "Do you offer vegetarian or vegan options?",
+    a: "Absolutely! Our menu is clearly labelled with 🌱 Vegan and 🌿 Healthy tags. Highlights include our Vegetable Udon, Edamame Gyoza, and Miso Soup Deluxe. Please inform your server of any dietary requirements.",
+    icon: "🌱",
+  },
+  {
+    q: "What payment methods do you accept?",
+    a: "We accept UPI (Google Pay, PhonePe, Paytm), credit/debit cards (Visa, Mastercard, Amex), popular wallets (Amazon Pay, Mobikwik, Airtel), and Cash on Delivery for all delivery orders.",
+    icon: "💳",
+  },
+];
+
+function HelpPage() {
+  const [openIdx, setOpenIdx] = useState(null);
+
+  const toggle = (i) => setOpenIdx(prev => (prev === i ? null : i));
+
+  return (
+    <div className="page-enter" style={{ paddingTop: 80, minHeight: "100vh", background: "#fdf0f5" }}>
+      {/* Header banner */}
+      <div style={{
+        background: "linear-gradient(135deg, #ff6b9d 0%, #ffb3c6 60%, #ffd580 100%)",
+        padding: "60px clamp(16px,4vw,48px) 50px",
+        textAlign: "center",
+        position: "relative",
+        overflow: "hidden",
+      }}>
+        {/* Decorative petals */}
+        {["10%", "30%", "55%", "75%", "90%"].map((left, i) => (
+          <div key={i} style={{
+            position: "absolute",
+            top: `${10 + i * 12}%`,
+            left,
+            fontSize: "1.4rem",
+            opacity: 0.25,
+            animation: `petal-spin ${6 + i * 2}s linear infinite`,
+            pointerEvents: "none",
+          }}>🌸</div>
+        ))}
+        <div className="section-sub float-up" style={{ color: "rgba(255,255,255,0.85)", marginBottom: 10 }}>
+          サポート
+        </div>
+        <h1 className="float-up-d1 section-title" style={{ color: "white", textShadow: "0 4px 20px rgba(45,27,46,0.2)", marginBottom: 14 }}>
+          Help & FAQ
+        </h1>
+        <p className="float-up-d2" style={{ color: "rgba(255,255,255,0.88)", fontSize: "1rem", maxWidth: 480, margin: "0 auto", lineHeight: 1.7 }}>
+          Everything you need to know about Sakura Bites. Can't find an answer?{" "}
+          <a href="mailto:hello@sakurabites.in" style={{ color: "white", fontWeight: 700, textDecoration: "underline" }}>
+            Drop us a message.
+          </a>
+        </p>
+      </div>
+
+      {/* FAQ cards */}
+      <div style={{ maxWidth: 780, margin: "0 auto", padding: "60px clamp(16px,4vw,48px)" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          {FAQ_ITEMS.map((item, i) => {
+            const isOpen = openIdx === i;
+            return (
+              <div
+                key={i}
+                className="glass-card card-hover"
+                style={{
+                  overflow: "hidden",
+                  border: isOpen ? "1.5px solid rgba(255,107,157,0.45)" : "1px solid rgba(255,158,181,0.25)",
+                  boxShadow: isOpen
+                    ? "0 12px 40px rgba(255,107,157,0.15)"
+                    : "0 4px 20px rgba(255,107,157,0.07)",
+                  transition: "all 0.35s cubic-bezier(0.34,1.56,0.64,1)",
+                }}
+              >
+                {/* Question row */}
+                <button
+                  onClick={() => toggle(i)}
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 16,
+                    padding: "22px 26px",
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    fontFamily: "inherit",
+                    textAlign: "left",
+                  }}
+                >
+                  {/* Icon bubble */}
+                  <div style={{
+                    width: 44,
+                    height: 44,
+                    borderRadius: "50%",
+                    background: isOpen
+                      ? "linear-gradient(135deg, #ff6b9d, #ff9eb5)"
+                      : "rgba(255,107,157,0.1)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "1.2rem",
+                    flexShrink: 0,
+                    transition: "all 0.3s ease",
+                    boxShadow: isOpen ? "0 4px 16px rgba(255,107,157,0.35)" : "none",
+                  }}>
+                    {item.icon}
+                  </div>
+
+                  {/* Question text */}
+                  <span style={{
+                    flex: 1,
+                    fontFamily: "'Noto Serif JP', serif",
+                    fontWeight: 600,
+                    fontSize: "1rem",
+                    color: isOpen ? "#ff6b9d" : "#2d1b2e",
+                    lineHeight: 1.4,
+                    transition: "color 0.25s",
+                  }}>
+                    {item.q}
+                  </span>
+
+                  {/* Chevron */}
+                  <div style={{
+                    width: 28,
+                    height: 28,
+                    borderRadius: "50%",
+                    background: isOpen ? "rgba(255,107,157,0.12)" : "rgba(255,158,181,0.1)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexShrink: 0,
+                    transition: "all 0.3s ease",
+                    transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
+                    color: isOpen ? "#ff6b9d" : "#9b6b8a",
+                    fontSize: "0.75rem",
+                    fontWeight: 700,
+                  }}>
+                    ▼
+                  </div>
+                </button>
+
+                {/* Answer panel */}
+                {isOpen && (
+                  <div style={{
+                    padding: "0 26px 24px 86px",
+                    animation: "float-up 0.3s ease both",
+                  }}>
+                    <div style={{
+                      borderTop: "1px solid rgba(255,158,181,0.2)",
+                      paddingTop: 18,
+                      fontSize: "0.92rem",
+                      color: "#5a3d5c",
+                      lineHeight: 1.75,
+                    }}>
+                      {item.a}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Contact card */}
+        <div className="glass-card" style={{
+          marginTop: 48,
+          padding: "36px 32px",
+          textAlign: "center",
+          border: "1px solid rgba(255,158,181,0.25)",
+          background: "linear-gradient(135deg, rgba(255,107,157,0.06), rgba(255,213,128,0.06))",
+        }}>
+          <div style={{ fontSize: "2rem", marginBottom: 12 }}>🌸</div>
+          <h3 style={{ fontFamily: "'Noto Serif JP', serif", fontSize: "1.2rem", color: "#2d1b2e", marginBottom: 10, fontWeight: 700 }}>
+            Still need help?
+          </h3>
+          <p style={{ color: "#9b6b8a", fontSize: "0.9rem", lineHeight: 1.7, marginBottom: 22 }}>
+            Our team is ready to help Mon–Sun, 11 AM – 11:30 PM
+          </p>
+          <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+            <a href="tel:+912240019999" className="btn-primary" style={{ display: "inline-flex", alignItems: "center", gap: 8, textDecoration: "none" }}>
+              📞 Call Us
+            </a>
+            <a href="mailto:hello@sakurabites.in" className="btn-outline" style={{ display: "inline-flex", alignItems: "center", gap: 8, textDecoration: "none" }}>
+              ✉️ Email Us
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -1653,6 +1862,7 @@ export default function App() {
     Delivery: <DeliveryPage {...pageProps} />,
     Payment: <PaymentPage {...pageProps} />,
     Checkout: <CheckoutPage {...pageProps} />,
+    Help: <HelpPage />,
   };
 
   return (
