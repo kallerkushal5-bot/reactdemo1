@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 function HeroBanner() {
   const videoId = "0eU8SjnZMnA";
-  const src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&controls=0&rel=0&modestbranding=1&playlist=${videoId}&playsinline=1&showinfo=0`;
+  const src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&controls=0&rel=0&modestbranding=1&playlist=${videoId}&start=5&playsinline=1&showinfo=0`;
 
   return (
     <section className="hero-banner">
