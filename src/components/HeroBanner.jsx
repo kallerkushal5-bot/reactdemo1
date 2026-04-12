@@ -1,20 +1,21 @@
 import { Link } from "react-router-dom";
 
 function HeroBanner() {
+  const videoId = "0eU8SjnZMnA";
+  const src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&controls=0&rel=0&modestbranding=1&playlist=${videoId}&playsinline=1&showinfo=0`;
+
   return (
     <section className="hero-banner">
-      <video
-        className="hero-banner__video"
-        preload="metadata"
-        autoPlay
-        muted
-        loop
-        playsInline
-        poster="/assets/sakura-fallback.svg"
-      >
-        <source src="/assets/sakura.mp4" type="video/mp4" />
-        Your browser does not support the Sakura video.
-      </video>
+      <div className="hero-banner__video-wrapper">
+        <iframe
+          className="hero-banner__video"
+          title="Sakura hero video"
+          src={src}
+          frameBorder="0"
+          allow="autoplay; fullscreen; encrypted-media"
+          allowFullScreen
+        />
+      </div>
 
       <div className="hero-banner__overlay" />
 
